@@ -149,6 +149,8 @@ x_trans = ColumnTransformer(remainder='passthrough',
                                   'TOTAL_DURASI_inet', 'DUREE_ALL_pots',
                                   'TOTAL_FREQ_inet', 'CALL_ALL_pots',
                                   'TOTAL_USAGE_inet', 'PSI_LATE_SC'])])
+st.subheader('X INFO')
+st.write(x.info())
 
 x_encoded = x_trans.fit_transform(x)
 
