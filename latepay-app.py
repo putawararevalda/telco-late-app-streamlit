@@ -162,7 +162,8 @@ st.subheader('ENCODED')
 st.write(x_encoded[:10])
 
 # Reads in saved classification model
-#load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
+load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
+"""
 load_clf = XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
               colsample_bynode=1, colsample_bytree=0.7, gamma=0.0, gpu_id=-1,
               importance_type='gain', interaction_constraints='',
@@ -171,6 +172,7 @@ load_clf = XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
               n_estimators=100, n_jobs=4, num_parallel_tree=1, random_state=111,
               reg_alpha=0.005, reg_lambda=1, scale_pos_weight=1, subsample=0.85,
               tree_method='exact', validate_parameters=1, verbosity=None)
+"""
 
 # Apply model to make predictions
 prediction = load_clf.predict(x_encoded_input)
