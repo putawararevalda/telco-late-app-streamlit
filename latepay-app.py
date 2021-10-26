@@ -52,19 +52,16 @@ video_file = open(vidfilename, 'rb')
 video_bytes = video_file.read()
 
 
-col1, col2 = st.columns([2, 2])
+st.header("Telkomathon Batch 2")
+st.sidebar.video(video_bytes)
 
-with col1:
-    st.header("Telkomathon Batch 2")
-    st.video(video_bytes)
 
-with col2:
-    st.write("""
-    # Customer Late Payment Prediction App
-    ## Created by : [Revalda Putawara](https://github.com/putawararevalda)
-    This app predicts the **Customer Late Payment** at a Telco Company!
-    Data obtained from one anonymous company in Indonesia.
-    """)
+st.write("""
+# Customer Late Payment Prediction App
+## Created by : [Revalda Putawara](https://github.com/putawararevalda)
+This app predicts the **Customer Late Payment** at a Telco Company!
+Data obtained from one anonymous company in Indonesia.
+""")
 
 image=Image.open('logo-telkomathon.jpg')
 st.sidebar.image(image, use_column_width=True)
@@ -112,7 +109,7 @@ else:
 
     def user_input_features():
         PSI_LATE_SC = st.sidebar.selectbox('PSI_LATE_SC', (0/6, 1/6, 2/6, 3/6, 4/6, 5/6, 6/6))
-        LENGTH_OF_STAY = st.sidebar.number_input('LENGTH_OF_STAY', min_value=0.0, value=28.0)
+        LENGTH_OF_STAY = st.sidebar.number_input('LENGTH_OF_STAY', min_value=0.0, value=28.0, step=1.0)
         PAYMENT_inet = st.sidebar.number_input('PAYMENT_inet', min_value=0.0, value=341000.0)
         TOTAL_DURASI_inet = st.sidebar.number_input('TOTAL_DURASI_inet', min_value=0.0, value=2406595.333333333)
         TOTAL_FREQ_inet = st.sidebar.number_input('TOTAL_FREQ_inet', min_value=0.0, value=13.833333333333334)
