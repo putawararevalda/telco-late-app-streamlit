@@ -117,6 +117,11 @@ st.write(input_df.transpose())
 telco_df = pd.read_pickle("train_data.pkl")
 df = pd.concat([input_df,telco_df],axis=0)
 
+st.subheader('HEAD')
+
+st.write(df.head(10))
+
+
 df_1 = to_categorical(find_categorical(df), df)
 
 # create x
@@ -128,7 +133,20 @@ categorical_columns = list(x.select_dtypes(include='category').columns)
 numeric_columns = list(x.select_dtypes(exclude='category').columns)
 
 
-x_trans = joblib.load('X_trans_scaler.gz')
+#x_trans = joblib.load('X_trans_scaler.gz')
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, LabelEncoder
+from sklearn.preprocessing import RobustScaler
+
+x_trans = ColumnTransformer(remainder='passthrough',
+                  transformers=[('one_hot_encoder',
+                                 OneHotEncoder(drop='first', dtype='int'),
+                                 ['POTS_EXIST']),
+                                ('robust_scaler', RobustScaler(),
+                                 ['LENGTH_OF_STAY', 'PAYMENT_inet',
+                                  'TOTAL_DURASI_inet', 'DUREE_ALL_pots',
+                                  'TOTAL_FREQ_inet', 'CALL_ALL_pots',
+                                  'TOTAL_USAGE_inet', 'PSI_LATE_SC'])])
 
 x_encoded = x_trans.fit_transform(x)
 
