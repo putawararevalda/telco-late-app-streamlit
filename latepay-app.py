@@ -155,6 +155,11 @@ x_encoded = x_trans.fit_transform(x)
 x_encoded_data = x_encoded[1:]
 x_encoded_input = x_encoded[:1]
 
+
+st.subheader('ENCODED')
+
+st.write(x_encoded[1:10])
+
 # Reads in saved classification model
 load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
 
