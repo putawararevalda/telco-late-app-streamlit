@@ -106,93 +106,31 @@ else:
 
     input_df = user_input_features()
 
-"""COMMENT FOR TRIAL PURPOSE START.
-
-# Combines user input features with entire telco dataset
-# This will be useful for the encoding phase
-telco_raw = pd.read_csv('WA_Fn-UseC_-Telco-Customer-Churn.csv')
-telco_df = telco_raw.drop(columns=['customerID','Churn'])
-
-df = pd.concat([input_df,telco_df],axis=0)
-
-# totalcharges to numeric
-df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
-
-# value mapping
-## Shorten the Labels
-value_mapper = {'Female': 'F', 'Male': 'M', 'Yes': 'Y', 'No': 'N',
-                'No phone service': 'No phone', 'Fiber optic': 'Fiber',
-                'No internet service': 'No internet', 'Month-to-month': 'Monthly',
-                'Bank transfer (automatic)': 'Bank transfer',
-                'Credit card (automatic)': 'Credit card',
-                'One year': '1 yr', 'Two year': '2 yr'}
-df_1 = df.replace(to_replace=value_mapper)
-
-
-# df columns to lower
-df_1.columns = [label.lower() for label in df_1.columns]
-
-# remove tenure = 0
-df_1.drop(labels=df_1[df_1['tenure'] == 0].index, axis=0, inplace=True)
-
-# convert to categorical
-df_1 = to_categorical(find_categorical(df_1), df_1)
-
-# reorder column so tenure get beside numerical features
-new_order = list(df_1.columns)
-new_order.insert(16, new_order.pop(4))
-df_1 = df_1[new_order]
-
-# Categorical and numerical column for transforming purpise
-x = df_1.copy()
-categorical_columns = list(x.select_dtypes(include='string').columns)
-numeric_columns = list(x.select_dtypes(exclude='string').columns)
-
-"""
-
+    
 # Displays the user input features
 st.subheader('User Input features')
 
 st.write(input_df.transpose())
 
-"""COMMENT FOR TRIAL PURPOSE START.
+# create x
+    
+x = input_df.copy()
+x_trans = joblib.load('X_trans_scaler.gz')
 
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, LabelEncoder
-
-## Column Transformer
-transformers = [('one_hot_encoder',
-                  OneHotEncoder(drop='first',dtype='int'),
-                  categorical_columns),
-                ('standard_scaler', StandardScaler(), numeric_columns)]
-x_trans = ColumnTransformer(transformers, remainder='passthrough')
-
-## Applying Column Transformer
 x_encoded = x_trans.fit_transform(x)
 
-# Generate x_encoded_input as an encoder or standardization of input data
-x_encoded_data = x_encoded[1:]
-x_encoded_input = x_encoded[:1]
-
-# Standard Scaling function done last, so that the input won't spoil the raw data
-x_encoded_input[0,-3] = (df_1.iloc[0,-3] - df_1.iloc[1:,-3].mean()) / df_1.iloc[1:,-3].std()
-x_encoded_input[0,-2] = (df_1.iloc[0,-2] - df_1.iloc[1:,-2].mean()) / df_1.iloc[1:,-2].std()
-x_encoded_input[0,-1] = (df_1.iloc[0,-1] - df_1.iloc[1:,-1].mean()) / df_1.iloc[1:,-1].std()
-
 # Reads in saved classification model
-load_clf = pickle.load(open('telco-churn_logreg_clf.pkl', 'rb'))
+load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
 
 # Apply model to make predictions
-prediction = load_clf.predict(x_encoded_input)
-prediction_proba = load_clf.predict_proba(x_encoded_input)
+prediction = load_clf.predict(x_encoded)
+prediction_proba = load_clf.predict_proba(x_encoded)
 
 # Display Prediction based on input
 st.subheader('Prediction')
-cust_cat = np.array(['No Churn','Churn'])
+cust_cat = np.array(['Diligent Payer','Late Payer'])
 st.write(cust_cat[prediction])
 
 # Display Prediction Probability based on input
 st.subheader('Prediction Probability')
 st.write(prediction_proba)
-
-"""
