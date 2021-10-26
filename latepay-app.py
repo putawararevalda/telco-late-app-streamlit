@@ -158,7 +158,7 @@ x_encoded_input = x_encoded[:1]
 
 st.subheader('ENCODED')
 
-st.write(x_encoded[1:10])
+st.write(x_encoded[:10])
 
 # Reads in saved classification model
 load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
