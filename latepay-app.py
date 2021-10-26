@@ -104,20 +104,37 @@ else:
         features = pd.DataFrame(data, index=[0])
         return features
 
-    input_df = user_input_features()
-
+    input_df = user_input_features()    
+    
     
 # Displays the user input features
 st.subheader('User Input features')
 
 st.write(input_df.transpose())
 
+### DATA TRANSFORMATION
+
+telco_df = pd.read_pickle("train_data.pkl")
+df = pd.concat([input_df,telco_df],axis=0)
+
+df_1 = to_categorical(find_categorical(df), df)
+
 # create x
-    
-x = input_df.copy()
+
+# Categorical and numerical column for transforming purpise
+x = df_1.copy()
+
+categorical_columns = list(x.select_dtypes(include='category').columns)
+numeric_columns = list(x.select_dtypes(exclude='category').columns)
+
+
 x_trans = joblib.load('X_trans_scaler.gz')
 
 x_encoded = x_trans.fit_transform(x)
+
+# Generate x_encoded_input as an encoder or standardization of input data
+x_encoded_data = x_encoded[1:]
+x_encoded_input = x_encoded[:1]
 
 # Reads in saved classification model
 load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
