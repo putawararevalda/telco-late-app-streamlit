@@ -87,7 +87,7 @@ else:
         TOTAL_DURASI_inet = st.sidebar.number_input('TOTAL_DURASI_inet', min_value=0.0, value=2406595.333333333)
         TOTAL_FREQ_inet = st.sidebar.number_input('TOTAL_FREQ_inet', min_value=0.0, value=13.833333333333334)
         TOTAL_USAGE_inet = st.sidebar.number_input('TOTAL_USAGE_inet', min_value=0.0, value=325596.6666666667)
-        POTS_EXIST_True = st.sidebar.selectbox('POTS_EXIST', (1, 0))
+        POTS_EXIST = st.sidebar.selectbox('POTS_EXIST', (True, False))
         DUREE_ALL_pots = st.sidebar.number_input('DUREE_ALL_pots', min_value=0.0, value=0.0)
         CALL_ALL_pots = st.sidebar.number_input('CALL_ALL_pots', min_value=0.0, value=0.0)
 
@@ -97,7 +97,7 @@ else:
                 'TOTAL_DURASI_inet': TOTAL_DURASI_inet,
                 'TOTAL_FREQ_inet': TOTAL_FREQ_inet,
                 'TOTAL_USAGE_inet': TOTAL_USAGE_inet,
-                'POTS_EXIST_True': POTS_EXIST_True,
+                'POTS_EXIST': POTS_EXIST,
                 'DUREE_ALL_pots': DUREE_ALL_pots,
                 'CALL_ALL_pots': CALL_ALL_pots}
 
