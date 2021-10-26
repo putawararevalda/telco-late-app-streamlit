@@ -140,8 +140,8 @@ x_encoded_input = x_encoded[:1]
 load_clf = pickle.load(open('telco-latepay-xgb.pkl', 'rb'))
 
 # Apply model to make predictions
-prediction = load_clf.predict(x_encoded)
-prediction_proba = load_clf.predict_proba(x_encoded)
+prediction = load_clf.predict(x_encoded_input)
+prediction_proba = load_clf.predict_proba(x_encoded_input)
 
 # Display Prediction based on input
 st.subheader('Prediction')
