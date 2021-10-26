@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import joblib
+from xgboost import XGBClassifier
 
 def summarize_categoricals(df, show_levels=False):
     """
