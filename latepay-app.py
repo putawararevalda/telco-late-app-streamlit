@@ -79,17 +79,6 @@ if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
 
-['LENGTH_OF_STAY',
- 'PAYMENT_inet',
- 'TOTAL_DURASI_inet',
- 'DUREE_ALL_pots',
- 'TOTAL_FREQ_inet',
- 'CALL_ALL_pots',
- 'TOTAL_USAGE_inet',
- 'PSI_LATE_SC',
- 'POTS_EXIST',
- 'Y']
-
     def user_input_features():
         PSI_LATE_SC = st.sidebar.number_input('PSI_LATE_SC', min_value=0.0, value=0.0, max_value=1)
         LENGTH_OF_STAY = st.sidebar.number_input('LENGTH_OF_STAY', min_value=0.0, value=28)
