@@ -80,25 +80,25 @@ if uploaded_file is not None:
 else:
 
     def user_input_features():
-        PSI_LATE_SC = st.sidebar.number_input('PSI_LATE_SC', min_value=0.0, value=0.0, max_value=1)
-        LENGTH_OF_STAY = st.sidebar.number_input('LENGTH_OF_STAY', min_value=0.0, value=28)
-        PAYMENT_inet = st.sidebar.number_input('PAYMENT_inet', min_value=0.0, value=341000)
+        PSI_LATE_SC = st.sidebar.number_input('PSI_LATE_SC', min_value=0.0, value=0.0, max_value=1.0)
+        LENGTH_OF_STAY = st.sidebar.number_input('LENGTH_OF_STAY', min_value=0.0, value=28.0)
+        PAYMENT_inet = st.sidebar.number_input('PAYMENT_inet', min_value=0.0, value=341000.0)
         TOTAL_DURASI_inet = st.sidebar.number_input('TOTAL_DURASI_inet', min_value=0.0, value=2406595.333333333)
         TOTAL_FREQ_inet = st.sidebar.number_input('TOTAL_FREQ_inet', min_value=0.0, value=13.833333333333334)
         TOTAL_USAGE_inet = st.sidebar.number_input('TOTAL_USAGE_inet', min_value=0.0, value=325596.6666666667)
         POTS_EXIST = st.sidebar.selectbox('POTS_EXIST', (True, False))
-        DUREE_ALL_pots = st.sidebar.number_input('DUREE_ALL_pots', min_value=0.0, value=32.37)
-        CALL_ALL_pots = st.sidebar.number_input('CALL_ALL_pots', min_value=0.0, value=32.37)
+        DUREE_ALL_pots = st.sidebar.number_input('DUREE_ALL_pots', min_value=0.0, value=0.0)
+        CALL_ALL_pots = st.sidebar.number_input('CALL_ALL_pots', min_value=0.0, value=0.0)
 
-        data = {'gender': gender,
-                'SeniorCitizen': SeniorCitizen,
-                'Partner': Partner,
-                'Dependents': Dependents,
-                'tenure': tenure,
-                'PhoneService': PhoneService,
-                'MultipleLines': MultipleLines,
-                'InternetService': InternetService,
-                'OnlineSecurity': OnlineSecurity}
+        data = {'PSI_LATE_SC': PSI_LATE_SC,
+                'LENGTH_OF_STAY': LENGTH_OF_STAY,
+                'PAYMENT_inet': PAYMENT_inet,
+                'TOTAL_DURASI_inet': TOTAL_DURASI_inet,
+                'TOTAL_FREQ_inet': TOTAL_FREQ_inet,
+                'TOTAL_USAGE_inet': TOTAL_USAGE_inet,
+                'POTS_EXIST': POTS_EXIST,
+                'DUREE_ALL_pots': DUREE_ALL_pots,
+                'CALL_ALL_pots': CALL_ALL_pots}
 
         features = pd.DataFrame(data, index=[0])
         return features
