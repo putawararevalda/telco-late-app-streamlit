@@ -164,11 +164,11 @@ showsim = st.checkbox('Show Simulation',value=False)
 
 if showsim :
     custnum = st.number_input('# Customer in Indonesia', min_value=0, value=8000000, step=1)
-    churn_rate = st.number_input('Churn Rate Assumption', min_value=0.00, max_value = 1.00, value=0.70, step=0.01)
+    churn_rate = st.slider(label= "Churn Rate", min_value=0.00, max_value=1.00, value=0.70, step=0.05)
     norm_arpu = st.number_input('Normal ARPU', min_value=0, value=341000, step=1000)
     down_arpu = st.number_input('Downgraded ARPU', min_value=0, value=275000, step=1000)
-    churnprog_rate = st.number_input('Churn Rate Assumption (after program)', min_value=0.00, max_value = 1.00, value=0.20, step=0.01)
-    downprog_rate = st.number_input('Downgrade Rate Assumption (after program)', min_value=0.00, max_value = 1.00, value=0.50, step=0.01)
+    churnprog_rate = st.slider(label= "Churn Rate Assumption (after program)", min_value=0.00, max_value=1.00, value=0.20, step=0.05)
+    downprog_rate = st.slider(label= "Downgrade Rate Assumption (after program)", min_value=0.00, max_value=1.00, value=0.50, step=0.05)
 
     act = ['Diligent', 'Late', 'Diligent', 'Late']
     pred = ['Diligent', 'Late', 'Late', 'Diligent']
@@ -234,7 +234,7 @@ if uploaded_file is not None:
 else:
 
     def user_input_features():
-        PSI_LATE_SC = st.sidebar.selectbox('PSI_LATE_SC', (0/6, 1/6, 2/6, 3/6, 4/6, 5/6, 6/6))
+        PSI_LATE_SC = st.sidebar.slider(label= "PSI_LATE_SC", min_value=0.00, max_value=1.00, value=0.00, step=1/6)
         LENGTH_OF_STAY = st.sidebar.number_input('LENGTH_OF_STAY', min_value=0.0, value=28.0, step=1.0)
         PAYMENT_inet = st.sidebar.number_input('PAYMENT_inet', min_value=0.0, value=341000.0)
         TOTAL_DURASI_inet = st.sidebar.number_input('TOTAL_DURASI_inet', min_value=0.0, value=2406595.333333333)
