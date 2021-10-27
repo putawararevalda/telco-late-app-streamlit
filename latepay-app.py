@@ -105,12 +105,23 @@ st.markdown(separator)
 showvarinfo2 = st.checkbox('PSI_LATE_SC Info',value=False)
 
 if showvarinfo2 :
-    ps1 = st.selectbox('M1 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
-    ps2 = st.selectbox('M2 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
-    ps3 = st.selectbox('M3 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
-    ps4 = st.selectbox('M4 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
-    ps5 = st.selectbox('M5 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
-    ps6 = st.selectbox('M6 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    col1c, col2c, col3c = st.columns(3)
+    with col1c:
+        ps1 = st.selectbox('M1 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    with col2c:
+        ps2 = st.selectbox('M2 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    with col3c:
+        ps3 = st.selectbox('M3 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+
+    col1d, col2d, col3d = st.columns(3)
+    with col1d:
+        ps4 = st.selectbox('M4 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    with col2d:
+        ps5 = st.selectbox('M5 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    with col3d:
+        ps6 = st.selectbox('M6 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    
+
 
     var1 = ['M1', 'M2', 'M3', 'M4','M5','M6']
     var2 = [ps1,ps2,ps3,ps4,ps5,ps6]
@@ -165,10 +176,21 @@ showsim = st.checkbox('Show Simulation',value=False)
 if showsim :
     custnum = st.number_input('# Customer in Indonesia', min_value=0, value=8000000, step=1)
     churn_rate = st.slider(label= "Churn Rate", min_value=0.00, max_value=1.00, value=0.70, step=0.05)
-    norm_arpu = st.number_input('Normal ARPU', min_value=0, value=341000, step=1000)
-    down_arpu = st.number_input('Downgraded ARPU', min_value=0, value=275000, step=1000)
-    churnprog_rate = st.slider(label= "Churn Rate Assumption (after program)", min_value=0.00, max_value=1.00, value=0.20, step=0.05)
-    downprog_rate = st.slider(label= "Downgrade Rate Assumption (after program)", min_value=0.00, max_value=1.00, value=0.50, step=0.05)
+
+    col1a, col2a= st.columns(2)
+
+    with col1a:
+        norm_arpu = st.number_input('Normal ARPU', min_value=0, value=341000, step=1000)
+    with col2a:
+        down_arpu = st.number_input('Downgraded ARPU', min_value=0, value=275000, step=1000)
+    
+    col1b, col2b= st.columns(2)
+
+    with col1b:
+        churnprog_rate = st.slider(label= "Churn Rate Assumption (after program)", min_value=0.00, max_value=1.00, value=0.20, step=0.05)
+    with col2b:
+        downprog_rate = st.slider(label= "Downgrade Rate Assumption (after program)", min_value=0.00, max_value=1.00, value=0.50, step=0.05)
+
 
     act = ['Diligent', 'Late', 'Diligent', 'Late']
     pred = ['Diligent', 'Late', 'Late', 'Diligent']
@@ -210,9 +232,22 @@ if showsim :
 
     st.header("Colection Result Comparison")
 
-    st.metric(label="Collection (doing nothing)", value='Rp. {:,}'.format(result_df["Collection 0"].sum()))
-    st.metric(label="Collection (with program)", value='Rp. {:,}'.format(result_df["Collection 1"].sum()), delta="{0:.2%}".format(delta))
+    col1, col2= st.columns(2)
+
+    with col1:
+        st.header("Scenario 0")
+        st.metric(label="Collection (doing nothing)", value='Rp. {:,}'.format(result_df["Collection 0"].sum()))
+
+    with col2:
+        st.header("Scenario 1")
+        st.metric(label="Collection (with program)", value='Rp. {:,}'.format(result_df["Collection 1"].sum()), delta="{0:.2%}".format(delta))
+
+    st.header("Improvement")
     st.metric(label="Collection addition", value='Rp. {:,}'.format(result_df["Collection 1"].sum() - result_df["Collection 0"].sum()))
+
+    
+    
+    
 
 
 
