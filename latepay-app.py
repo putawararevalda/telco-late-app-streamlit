@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import math
 import pickle
 import joblib
 from xgboost import XGBClassifier
@@ -76,7 +77,7 @@ showverhist = st.checkbox('Show Version History',value=False)
 if showverhist:
     st.markdown('Version History of this app is as follows:\n\n\
         - Version 0.0.0 | 26/10/2021 : Initial Commit\n\
-        - Version 0.1.0 : 27/10/2021 : Add model info, Add some cosmetics\n\
+        - Version 0.1.0 | 27/10/2021 : Add model info, Add some cosmetics\n\
         - Version 0.1.1 : \n\
         - Version 0.1.2 : ')
 
@@ -85,11 +86,131 @@ st.markdown(separator)
 showvarinfo = st.checkbox('Show Variable Info',value=False)
 
 if showvarinfo :
-    st.markdown('The data set includes information about:\n\n\
-    - Customers who left within the last month – the column is called Churn\n\
-    - Services that each customer has signed up for – phone, multiple lines, internet, online security, online backup, device protection, tech support, and streaming TV and movies\n\
-    - Customer account information – how long they’ve been a customer, contract, payment method, paperless billing, monthly charges, and total charges\n\
-    - Demographic info about customers – gender, age range, and if they have partners and dependent')
+    st.markdown('The data set includes these information:\n\n\
+    - Customers who pay late (later than date 20 each month) is called Late Payer\n\
+    - PSI_LATE_SC : engineered feature, describes past customer behaviour in payment, closer to 0 is better (on time), closer to 1 is not good (more late payment in previous month) \n\
+    - Length of Stay : how long they have used the product (in Months)\n\
+    - Inet related variables : Durasi, Freq, and Usage of Inet\n\
+    - POTS related variables : whether customer have pots or not (POTS_EXIST), duree, and call freq')
+
+    image2=Image.open('timeline.png')
+    st.image(image2)
+
+    image3=Image.open('datalist.png')
+    st.image(image3)
+
+st.markdown(separator)
+
+
+showvarinfo2 = st.checkbox('PSI_LATE_SC Info',value=False)
+
+if showvarinfo2 :
+    ps1 = st.selectbox('M1 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    ps2 = st.selectbox('M2 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    ps3 = st.selectbox('M3 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    ps4 = st.selectbox('M4 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    ps5 = st.selectbox('M5 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+    ps6 = st.selectbox('M6 payment status', ('NOT_LATE', 'LATE_SAME_MONTH','LATE_NEXT_MONTH'))
+
+    var1 = ['M1', 'M2', 'M3', 'M4','M5','M6']
+    var2 = [ps1,ps2,ps3,ps4,ps5,ps6]
+  
+    var1_series = pd.Series(var1)
+    var2_series = pd.Series(var2)
+  
+    frame_pls = {'Period': var1_series, 'Payment Status': var2_series}
+  
+    pls_df = pd.DataFrame(frame_pls)
+
+    pay_status_dict = {"LATE_SAME_MONTH": 1, "LATE_NEXT_MONTH" : 1, "NOT_LATE" : 0}
+    pls_df['PSI_LATE_score'] = pls_df['Payment Status'].map(pay_status_dict)
+
+
+    st.write(pls_df)
+
+    st.metric(label="PSI_LATE_SC", value=pls_df['PSI_LATE_score'].mean())
+
+
+st.markdown(separator)
+
+
+showmodel = st.checkbox('Show Model Result',value=False)
+
+if showmodel :
+    st.header("Confusion Matrix")
+    image4=Image.open('confmatrix.png')
+    st.image(image4)
+
+    st.header("Train-Test Details")
+    image5=Image.open('ttdetails.png')
+    st.image(image5)
+
+    st.header("Classification Report")
+    image5=Image.open('reportdetails.png')
+    st.image(image5)
+
+    st.header("AUC Score for Test Data")
+    image6=Image.open('roctest.png')
+    st.image(image6)
+
+st.markdown(separator)
+
+showsim = st.checkbox('Show Simulation',value=False)
+
+if showsim :
+    custnum = st.number_input('# Customer in Indonesia', min_value=0, value=8000000, step=1)
+    churn_rate = st.number_input('Churn Rate Assumption', min_value=0.00, max_value = 1.00, value=0.70, step=0.01)
+    norm_arpu = st.number_input('Normal ARPU', min_value=0, value=341000, step=1000)
+    down_arpu = st.number_input('Downgraded ARPU', min_value=0, value=275000, step=1000)
+    churnprog_rate = st.number_input('Churn Rate Assumption (after program)', min_value=0.00, max_value = 1.00, value=0.20, step=0.01)
+    downprog_rate = st.number_input('Downgrade Rate Assumption (after program)', min_value=0.00, max_value = 1.00, value=0.50, step=0.01)
+
+    act = ['Diligent', 'Late', 'Diligent', 'Late']
+    pred = ['Diligent', 'Late', 'Late', 'Diligent']
+    sample = [ 13064, 3016, 2984, 936]
+  
+    act_series = pd.Series(act)
+    pred_series = pd.Series(pred)
+    sample_series = pd.Series(sample)
+  
+    frame = {'Actual': act_series, 'Predicted': pred_series,'Sample Cust' : sample_series }
+  
+    result_df = pd.DataFrame(frame)
+
+    result_df["All Cust"] = 0
+
+    for xd in range(len(result_df)):
+        result_df.at[xd,"All Cust"] = math.ceil(result_df.at[xd,"Sample Cust"]/result_df["Sample Cust"].sum()*custnum)
+
+    result_df["Collection 0"] = 0
+
+    result_df.at[0,"Collection 0"] = result_df.at[0,"All Cust"] * norm_arpu
+    result_df.at[1,"Collection 0"] = (1-churn_rate) * result_df.at[1,"All Cust"] * norm_arpu 
+    result_df.at[2,"Collection 0"] = (1-churn_rate) * result_df.at[2,"All Cust"] * norm_arpu 
+    result_df.at[3,"Collection 0"] = result_df.at[3,"All Cust"] * norm_arpu
+
+    result_df["Collection 1"] = 0
+
+    result_df.at[0,"Collection 1"] = result_df.at[0,"All Cust"] * norm_arpu
+    result_df.at[1,"Collection 1"] = (1-(churnprog_rate+downprog_rate)) * result_df.at[1,"All Cust"] * norm_arpu + downprog_rate * result_df.at[1,"All Cust"] * down_arpu
+    result_df.at[2,"Collection 1"] = (1-churn_rate) * result_df.at[2,"All Cust"] * norm_arpu 
+    result_df.at[3,"Collection 1"] = result_df.at[3,"All Cust"] * norm_arpu
+
+    delta = (result_df["Collection 1"].sum() - result_df["Collection 0"].sum())/result_df["Collection 0"].sum()
+
+    st.subheader('Simulation Result')
+
+    st.write(result_df)
+
+
+    st.header("Colection Result Comparison")
+
+    st.metric(label="Collection (doing nothing)", value='Rp. {:,}'.format(result_df["Collection 0"].sum()))
+    st.metric(label="Collection (with program)", value='Rp. {:,}'.format(result_df["Collection 1"].sum()), delta="{0:.2%}".format(delta))
+    st.metric(label="Collection addition", value='Rp. {:,}'.format(result_df["Collection 1"].sum() - result_df["Collection 0"].sum()))
+
+
+
 
 st.markdown(separator)
 
@@ -102,7 +223,7 @@ st.sidebar.markdown("""
 """)
 
 # Collects user input features into dataframe
-uploaded_file = st.sidebar.file_uploader("Upload your input CSV file", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload your input CSV file (feature not ready)", type=["csv"])
 if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
