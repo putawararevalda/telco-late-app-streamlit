@@ -128,7 +128,7 @@ if showvarinfo2 :
 
     st.write(pls_df)
 
-    st.metric(label="PSI_LATE_SC", value=pls_df['PSI_LATE_score'].mean())
+    st.metric(label="PSI_LATE_SC", value=pls_df['PSI_LATE_score'].sum()/6)
 
 
 st.markdown(separator)
