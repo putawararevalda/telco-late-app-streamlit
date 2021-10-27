@@ -141,6 +141,7 @@ if showmodel :
     image4=Image.open('confmatrix.png')
     st.image(image4)
 
+
     st.header("Train-Test Details")
     image5=Image.open('ttdetails.png')
     st.image(image5)
@@ -149,9 +150,13 @@ if showmodel :
     image5=Image.open('reportdetails.png')
     st.image(image5)
 
-    st.header("AUC Score for Test Data")
-    image6=Image.open('roctest.png')
+    st.header("Feature Importance")
+    image6=Image.open('featureimp.png')
     st.image(image6)
+
+    st.header("AUC Score for Test Data")
+    image7=Image.open('roctest.png')
+    st.image(image7)
 
 st.markdown(separator)
 
