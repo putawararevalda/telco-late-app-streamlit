@@ -297,7 +297,7 @@ st.markdown(separator)
 
 
 st.write("""
-### That's the end of the *MACHINE LEARNING** part, sections below wil be related to the documentation of the model.
+### That's the end of the *MACHINE LEARNING* part, sections below wil be related to the documentation of the model.
 ### See simulation section for more experimentation!
 """)
 
