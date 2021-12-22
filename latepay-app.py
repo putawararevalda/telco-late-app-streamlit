@@ -137,7 +137,7 @@ with col3d:
 st.markdown(separator)
 
 
-##########33 COUNT FOR PSI_LATE_SC
+########## COUNT FOR PSI_LATE_SC
 
 var1 = ['M1', 'M2', 'M3', 'M4','M5','M6']
 var2 = [ps1,ps2,ps3,ps4,ps5,ps6]
@@ -275,31 +275,35 @@ st.write("""
 
 st.markdown(separator)
 
-col1h, col2h = st.columns(2)
+showpredresult = st.checkbox('Show PREDICTION RESULT',value=False)
 
-with col1h:
-    # Display Prediction based on input
-    st.subheader('Prediction')
-    cust_cat = np.array(['Diligent Payer','Late Payer'])
-    st.metric(label="Prediction", value=cust_cat[prediction][0])
-with col2h:
-    # Display Prediction Probability based on input
-    st.subheader('Probability of Paying Late')
-    st.metric(label="Probability of Paying Late", value="{0:.2%}".format(prediction_proba[0][1]))
+if showvpredresult:
 
-st.markdown(separator)
+    col1h, col2h = st.columns(2)
 
-st.write("""
-## Try changing the variable values, the probability will change!
-""")
+    with col1h:
+        # Display Prediction based on input
+        st.subheader('Prediction')
+        cust_cat = np.array(['Diligent Payer','Late Payer'])
+        st.metric(label="Prediction", value=cust_cat[prediction][0])
+    with col2h:
+        # Display Prediction Probability based on input
+        st.subheader('Probability of Paying Late')
+        st.metric(label="Probability of Paying Late", value="{0:.2%}".format(prediction_proba[0][1]))
 
-st.markdown(separator)
+    st.markdown(separator)
+
+    st.write("""
+    ## Try changing the variable values, the probability will change!
+    """)
+
+    st.markdown(separator)
 
 
-st.write("""
-### That's the end of the *MACHINE LEARNING* part, sections below wil be related to the documentation of the model.
-### See simulation section for more experimentation!
-""")
+    st.write("""
+    ### That's the end of the *MACHINE LEARNING* part, sections below wil be related to the documentation of the model.
+    ### See simulation section for more experimentation!
+    """)
 
 
 
