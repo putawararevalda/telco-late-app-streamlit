@@ -75,7 +75,6 @@ if showvarinfo :
 
     st.write("""
     ## Aplikasi ini merupakan model *MACHINE LEARNING* yang mengolah input data customer dan memprediksikan kemungkinan pelanggan tersebut terlambat membayar tagihan pada bulan depan.
-
     #### Variabel data customer yang digunakan adalah:
     1. **M1 - M6 payment status** : Terlambat / tidaknya pelanggan membayar tagihan internet per bulannya selama 6 bulan terakhir. (skema urutan bulan dapat dilihat pada bagian bawah dalam section ini)
     \n M1 - M6 payment status akan dikonversikan menjadi nilai PSI_LATE_SC (range nilai 0 - 1).\n
@@ -277,7 +276,7 @@ st.markdown(separator)
 
 showpredresult = st.checkbox('Show PREDICTION RESULT',value=False)
 
-if showvpredresult:
+if showpredresult:
 
     col1h, col2h = st.columns(2)
 
