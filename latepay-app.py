@@ -48,24 +48,45 @@ separator = '''
 
 #st.image(image, use_column_width=True)
 
-vidfilename = "telkomathon-vid.mp4"
-video_file = open(vidfilename, 'rb')
-video_bytes = video_file.read()
+#vidfilename = "telkomathon-vid.mp4"
+#video_file = open(vidfilename, 'rb')
+#video_bytes = video_file.read()
 
 
-st.header("Telkomathon Batch 2")
-st.sidebar.video(video_bytes)
+#st.header("Telkomathon Batch 2")
+#st.sidebar.video(video_bytes)
 
 
 st.write("""
 # Customer Late Payment Prediction App
-## Created by : [Revalda Putawara](https://github.com/putawararevalda)
 This app predicts the **Customer Late Payment** at a Telco Company!
 Data obtained from one anonymous company in Indonesia.
 """)
 
+st.write("""
+## Created by : Revalda Putawara
+""")
+
+
+col1_title, col2_title, col3_title = st.columns(3)
+with col1_title:
+    ps1_title = st.write("##### [LinkedIn](https://www.linkedin.com/in/revalda-putawara/)")
+with col2_title:
+    ps2_title = st.write("##### [Portfolio Page](https://www.notion.so/Revalda-Putawara-871ea548339f4c1eaa5baeb7c18010c0)")
+with col3_title:
+    ps3_title = st.write("##### [Github](https://github.com/putawararevalda)")
+
+st.write("""
+\nThis app is my final project upon participating in TelkomAthon Batch 2, Data Science Stream. 
+\n\nTelkomAthon is a program by Telkom Indonesia to nurture more digital talents throuth 4C approach; (Course, Coach, Community, and Competition / Challenge).
+\nYou can find more about TelkomAthon [here](https://www.telkomathon.com/)
+""")
+
+
 image=Image.open('logo-telkomathon.jpg')
 st.sidebar.image(image, use_column_width=True)
+
+st.sidebar.markdown(separator)
 
 st.markdown(separator)
 
@@ -110,7 +131,7 @@ if showvarinfo :
 st.markdown(separator)
 
 st.write("""
-# FEATURE INPUT : PAST 6 MONTHS PAYMENT BEHAVIOUR
+## FEATURE INPUT : PAST 6 MONTHS PAYMENT BEHAVIOUR
 """)
 
 st.markdown(separator)
@@ -155,7 +176,7 @@ psi_late_sc_score = pls_df['PSI_LATE_score'].mean()
 
 
 st.write("""
-# FEATURE INPUT : SERVICE RELATED VARIABLES
+## FEATURE INPUT : SERVICE RELATED VARIABLES
 """)
 
 st.markdown(separator)
@@ -269,12 +290,12 @@ prediction = load_clf.predict(x_encoded_input)
 prediction_proba = load_clf.predict_proba(x_encoded_input)
 
 st.write("""
-# PREDICTION RESULT
+### Click Check Button on the sidebar to show prediction result!
 """)
 
 st.markdown(separator)
 
-showpredresult = st.checkbox('Show PREDICTION RESULT',value=False)
+showpredresult = st.checkbox('Show PREDICTION RESULT here instead',value=False)
 
 if showpredresult:
 
@@ -304,7 +325,29 @@ if showpredresult:
     ### See simulation section for more experimentation!
     """)
 
+cust_cat = np.array(['🟢 Diligent Payer','🔴 Late Payer'])
 
+st.sidebar.title('Prediction Result')
+
+showsidebarresult = st.sidebar.checkbox('Show Prediction Result',value=False)
+
+if showsidebarresult:
+
+    #st.sidebar.write('\n## Prediction')
+    #st.sidebar.write(str(cust_cat[prediction][0]))
+    st.sidebar.markdown(separator)
+    st.sidebar.metric(label="Prediction", value=cust_cat[prediction][0])
+
+
+    #st.sidebar.write('\n## Probability of Paying Late')
+    #st.sidebar.write(str("{0:.2%}".format(prediction_proba[0][1])))
+    st.sidebar.markdown(separator)
+    st.sidebar.metric(label="Probability of Paying Late", value="{0:.2%}".format(prediction_proba[0][1]))
+
+    st.sidebar.markdown(separator)
+
+
+    st.markdown(separator)
 
 st.markdown(separator)
 
@@ -314,7 +357,7 @@ if showverhist:
     st.markdown('Version History of this app is as follows:\n\n\
         - Version 0.0.0 | 26/10/2021 : Initial Commit\n\
         - Version 0.1.0 | 27/10/2021 : Add model info, Add some cosmetics\n\
-        - Version 0.1.1 : \n\
+        - Version 0.1.1 : 24/12/2021 : Rearrange Layout for readability\n\
         - Version 0.1.2 : ')
 
 st.markdown(separator)
@@ -446,4 +489,4 @@ st.markdown(separator)
     #def user_input_features():
         #PSI_LATE_SC = st.sidebar.slider(label= "PSI_LATE_SC", min_value=0.00, max_value=1.00, value=0.00, step=1/6)
         
-        
+      
